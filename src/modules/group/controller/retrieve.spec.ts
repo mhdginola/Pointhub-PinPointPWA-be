@@ -43,7 +43,7 @@ describe("retrieve an group", () => {
     const userFactory = new UserFactory();
     const userSeed = [
       {
-        id: faker.datatype.uuid(),
+        _id: faker.database.mongodbObjectId(),
         username: "admin",
         role: "",
       },
@@ -51,7 +51,7 @@ describe("retrieve an group", () => {
     userFactory.sequence(userSeed);
     await userFactory.createMany(1);
 
-    const accessToken = signNewToken(issuer, secretKey, userSeed[0].id);
+    const accessToken = signNewToken(issuer, secretKey, userSeed[0]._id);
     const responseLogin = { body: { accessToken: accessToken } };
 
     const groupFactory = new GroupFactory();
@@ -72,7 +72,7 @@ describe("retrieve an group", () => {
     const userFactory = new UserFactory();
     const userSeed = [
       {
-        id: faker.datatype.uuid(),
+        _id: faker.database.mongodbObjectId(),
         username: "admin",
         role: "admin",
       },
@@ -80,7 +80,7 @@ describe("retrieve an group", () => {
     userFactory.sequence(userSeed);
     await userFactory.createMany(1);
 
-    const accessToken = signNewToken(issuer, secretKey, userSeed[0].id);
+    const accessToken = signNewToken(issuer, secretKey, userSeed[0]._id);
     const responseLogin = { body: { accessToken: accessToken } };
 
     const groupFactory = new GroupFactory();
@@ -92,7 +92,7 @@ describe("retrieve an group", () => {
     // check status code
     expect(response.statusCode).toEqual(200);
     // check response body
-    const groupRecord = await retrieve("coas", resultFactory.insertedIds[1]);
+    const groupRecord = await retrieve("groups", resultFactory.insertedIds[1]);
     expect(response.body._id).toBeDefined();
     expect(response.body.name).toStrictEqual(groupRecord.name);
     // check database
