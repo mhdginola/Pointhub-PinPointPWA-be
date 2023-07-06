@@ -40,6 +40,18 @@ export default class DbSeedCommand extends BaseCommand {
       await dbConnection.collection("groups").deleteAll();
       const groupData = await dbConnection.collection("groups").createMany(groupSeeds);
       console.info(`[seed] seeding groups data`, groupData);
+
+      // seed tagLocation collection
+      const { tagLocationSeeds } = await import("@src/modules/tagLocation/model/tagLocation.seed.js");
+      await dbConnection.collection("tagLocations").deleteAll();
+      const tagLocationData = await dbConnection.collection("tagLocations").createMany(tagLocationSeeds);
+      console.info(`[seed] seeding tagLocations data`, tagLocationData);
+
+      // seed invitation collection
+      const { invitationSeeds } = await import("@src/modules/invitation/model/invitation.seed.js");
+      await dbConnection.collection("invitations").deleteAll();
+      const invitationData = await dbConnection.collection("invitations").createMany(invitationSeeds);
+      console.info(`[seed] seeding invitations data`, invitationData);
     } catch (error) {
       console.error(error);
     } finally {
