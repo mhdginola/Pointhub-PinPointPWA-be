@@ -52,6 +52,12 @@ export default class DbSeedCommand extends BaseCommand {
       await dbConnection.collection("invitations").deleteAll();
       const invitationData = await dbConnection.collection("invitations").createMany(invitationSeeds);
       console.info(`[seed] seeding invitations data`, invitationData);
+
+      // seed attendance collection
+      const { attendanceSeeds } = await import("@src/modules/attendance/model/attendance.seed.js");
+      await dbConnection.collection("attendances").deleteAll();
+      const attendanceData = await dbConnection.collection("attendances").createMany(attendanceSeeds);
+      console.info(`[seed] seeding attendances data`, attendanceData);
     } catch (error) {
       console.error(error);
     } finally {

@@ -43,7 +43,7 @@ describe("retrieve all attendance as admin", () => {
     const userFactory = new UserFactory();
     const userSeed = [
       {
-        id: faker.datatype.uuid(),
+        _id: faker.database.mongodbObjectId(),
         username: "admin",
         role: "",
       },
@@ -51,7 +51,7 @@ describe("retrieve all attendance as admin", () => {
     userFactory.sequence(userSeed);
     await userFactory.createMany(1);
 
-    const accessToken = signNewToken(issuer, secretKey, userSeed[0].id);
+    const accessToken = signNewToken(issuer, secretKey, userSeed[0]._id);
     const responseLogin = { body: { accessToken: accessToken } };
 
     const attendanceFactory = new AttendanceFactory();
@@ -72,7 +72,7 @@ describe("retrieve all attendance as admin", () => {
     const userFactory = new UserFactory();
     const userSeed = [
       {
-        id: faker.datatype.uuid(),
+        _id: faker.database.mongodbObjectId(),
         username: "admin",
         role: "admin",
       },
@@ -80,7 +80,7 @@ describe("retrieve all attendance as admin", () => {
     userFactory.sequence(userSeed);
     await userFactory.createMany(1);
 
-    const accessToken = signNewToken(issuer, secretKey, userSeed[0].id);
+    const accessToken = signNewToken(issuer, secretKey, userSeed[0]._id);
     const responseLogin = { body: { accessToken: accessToken } };
 
     const attendanceFactory = new AttendanceFactory();
@@ -93,7 +93,7 @@ describe("retrieve all attendance as admin", () => {
     expect(response.statusCode).toEqual(200);
     // check response body
     const attendanceRecord = await retrieveAll("attendances", response.body._id);
-    expect(response.body.attendance.length).toStrictEqual(3);
+    expect(response.body.attendances.length).toStrictEqual(3);
     expect(attendanceRecord[0]._id).toStrictEqual(response.body.attendances[0]._id);
     expect(attendanceRecord[0].group).toStrictEqual(response.body.attendances[0].group);
     expect(attendanceRecord[0].photo).toStrictEqual(response.body.attendances[0].photo);
@@ -101,8 +101,8 @@ describe("retrieve all attendance as admin", () => {
     expect(attendanceRecord[0].email).toStrictEqual(response.body.attendances[0].email);
     expect(attendanceRecord[0].groupName).toStrictEqual(response.body.attendances[0].groupName);
 
-    expect(attendanceRecord[1].name).toStrictEqual(response.body.attendance[1].name);
-    expect(attendanceRecord[2].name).toStrictEqual(response.body.attendance[2].name);
+    expect(attendanceRecord[1].name).toStrictEqual(response.body.attendances[1].name);
+    expect(attendanceRecord[2].name).toStrictEqual(response.body.attendances[2].name);
 
     expect(response.body.pagination.page).toStrictEqual(1);
     expect(response.body.pagination.pageSize).toStrictEqual(10);
@@ -116,7 +116,7 @@ describe("retrieve all attendance as admin", () => {
     const userFactory = new UserFactory();
     const userSeed = [
       {
-        id: faker.datatype.uuid(),
+        _id: faker.database.mongodbObjectId(),
         username: "admin",
         role: "admin",
       },
@@ -124,32 +124,32 @@ describe("retrieve all attendance as admin", () => {
     userFactory.sequence(userSeed);
     await userFactory.createMany(1);
 
-    const accessToken = signNewToken(issuer, secretKey, userSeed[0].id);
+    const accessToken = signNewToken(issuer, secretKey, userSeed[0]._id);
     const responseLogin = { body: { accessToken: accessToken } };
 
     const attendanceFactory = new AttendanceFactory();
     const attendanceSeed = [
       {
-        username: "employee",
+        email: "employee@gmail.com",
       },
       {
-        username: "employee",
+        email: "employee@gmail.com",
       },
       {
-        username: "employee123",
+        email: "employee200@gmail.com",
       },
     ];
     attendanceFactory.sequence(attendanceSeed);
     await attendanceFactory.createMany(3);
 
     const response = await request(app)
-      .get("/v1/attendances?filter[username]=employee")
+      .get("/v1/attendances?filter[email]=employee@gmail.com")
       .set("Authorization", `Bearer ${responseLogin.body.accessToken}`);
     // check status code
     expect(response.statusCode).toEqual(200);
     // check response body
     const attendanceRecord = await retrieveAll("attendances", response.body._id);
-    expect(response.body.attendance.length).toStrictEqual(2);
+    expect(response.body.attendances.length).toStrictEqual(2);
     expect(attendanceRecord[0]._id).toStrictEqual(response.body.attendances[0]._id);
     expect(attendanceRecord[0].group).toStrictEqual(response.body.attendances[0].group);
     expect(attendanceRecord[0].photo).toStrictEqual(response.body.attendances[0].photo);
@@ -157,7 +157,7 @@ describe("retrieve all attendance as admin", () => {
     expect(attendanceRecord[0].email).toStrictEqual(response.body.attendances[0].email);
     expect(attendanceRecord[0].groupName).toStrictEqual(response.body.attendances[0].groupName);
 
-    expect(attendanceRecord[1].name).toStrictEqual(response.body.attendance[1].name);
+    expect(attendanceRecord[1].name).toStrictEqual(response.body.attendances[1].name);
 
     expect(response.body.pagination.page).toStrictEqual(1);
     expect(response.body.pagination.pageSize).toStrictEqual(10);
@@ -165,13 +165,14 @@ describe("retrieve all attendance as admin", () => {
     expect(response.body.pagination.totalDocument).toStrictEqual(2);
     // check database
   });
+  // TODO: unresolved
   it("1.5 retrieve all attendance filtered by date range, success", async () => {
     const app = await createApp();
 
     const userFactory = new UserFactory();
     const userSeed = [
       {
-        id: faker.datatype.uuid(),
+        _id: faker.database.mongodbObjectId(),
         username: "admin",
         role: "admin",
       },
@@ -179,19 +180,25 @@ describe("retrieve all attendance as admin", () => {
     userFactory.sequence(userSeed);
     await userFactory.createMany(1);
 
-    const accessToken = signNewToken(issuer, secretKey, userSeed[0].id);
+    const accessToken = signNewToken(issuer, secretKey, userSeed[0]._id);
     const responseLogin = { body: { accessToken: accessToken } };
 
     const attendanceFactory = new AttendanceFactory();
     const attendanceSeed = [
       {
-        createdAt: "2022-11-22",
+        photo: "photo1.jpg",
+        location: [5.7225, 5.7225],
+        createdAt: new Date("2022-11-22"),
       },
       {
-        createdAt: "2022-11-23",
+        photo: "photo2.jpg",
+        location: [5.7225, 5.7225],
+        createdAt: new Date("2022-11-23"),
       },
       {
-        createdAt: "2022-11-25",
+        photo: "photo3.jpg",
+        location: [5.7225, 5.7225],
+        createdAt: new Date("2022-11-25"),
       },
     ];
     attendanceFactory.sequence(attendanceSeed);
@@ -204,7 +211,7 @@ describe("retrieve all attendance as admin", () => {
     expect(response.statusCode).toEqual(200);
     // check response body
     const attendanceRecord = await retrieveAll("attendances", response.body._id);
-    expect(response.body.attendance.length).toStrictEqual(2);
+    expect(response.body.attendances.length).toStrictEqual(2);
     expect(attendanceRecord[0]._id).toStrictEqual(response.body.attendances[0]._id);
     expect(attendanceRecord[0].group).toStrictEqual(response.body.attendances[0].group);
     expect(attendanceRecord[0].photo).toStrictEqual(response.body.attendances[0].photo);
@@ -212,7 +219,7 @@ describe("retrieve all attendance as admin", () => {
     expect(attendanceRecord[0].email).toStrictEqual(response.body.attendances[0].email);
     expect(attendanceRecord[0].groupName).toStrictEqual(response.body.attendances[0].groupName);
 
-    expect(attendanceRecord[1].name).toStrictEqual(response.body.attendance[1].name);
+    expect(attendanceRecord[1].name).toStrictEqual(response.body.attendances[1].name);
 
     expect(response.body.pagination.page).toStrictEqual(1);
     expect(response.body.pagination.pageSize).toStrictEqual(10);
@@ -245,7 +252,7 @@ describe("retrieve all attendance as employee", () => {
     const userFactory = new UserFactory();
     const userSeed = [
       {
-        id: faker.datatype.uuid(),
+        _id: faker.database.mongodbObjectId(),
         username: "employee",
         role: "",
       },
@@ -253,7 +260,7 @@ describe("retrieve all attendance as employee", () => {
     userFactory.sequence(userSeed);
     await userFactory.createMany(1);
 
-    const accessToken = signNewToken(issuer, secretKey, userSeed[0].id);
+    const accessToken = signNewToken(issuer, secretKey, userSeed[0]._id);
     const responseLogin = { body: { accessToken: accessToken } };
 
     const attendanceFactory = new AttendanceFactory();
@@ -274,7 +281,7 @@ describe("retrieve all attendance as employee", () => {
     const userFactory = new UserFactory();
     const userSeed = [
       {
-        id: faker.datatype.uuid(),
+        _id: faker.database.mongodbObjectId(),
         username: "employee",
         role: "employee",
       },
@@ -282,7 +289,7 @@ describe("retrieve all attendance as employee", () => {
     userFactory.sequence(userSeed);
     await userFactory.createMany(1);
 
-    const accessToken = signNewToken(issuer, secretKey, userSeed[0].id);
+    const accessToken = signNewToken(issuer, secretKey, userSeed[0]._id);
     const responseLogin = { body: { accessToken: accessToken } };
 
     const attendanceFactory = new AttendanceFactory();
@@ -307,7 +314,7 @@ describe("retrieve all attendance as employee", () => {
     expect(response.statusCode).toEqual(200);
     // check response body
     const attendanceRecord = await retrieveAll("attendances", response.body._id);
-    expect(response.body.attendance.length).toStrictEqual(2);
+    expect(response.body.attendances.length).toStrictEqual(3);
     expect(attendanceRecord[0]._id).toStrictEqual(response.body.attendances[0]._id);
     expect(attendanceRecord[0].group).toStrictEqual(response.body.attendances[0].group);
     expect(attendanceRecord[0].photo).toStrictEqual(response.body.attendances[0].photo);
@@ -315,12 +322,12 @@ describe("retrieve all attendance as employee", () => {
     expect(attendanceRecord[0].email).toStrictEqual(response.body.attendances[0].email);
     expect(attendanceRecord[0].groupName).toStrictEqual(response.body.attendances[0].groupName);
 
-    expect(attendanceRecord[1].name).toStrictEqual(response.body.attendance[1].name);
+    expect(attendanceRecord[1].name).toStrictEqual(response.body.attendances[1].name);
 
     expect(response.body.pagination.page).toStrictEqual(1);
     expect(response.body.pagination.pageSize).toStrictEqual(10);
     expect(response.body.pagination.pageCount).toStrictEqual(1);
-    expect(response.body.pagination.totalDocument).toStrictEqual(2);
+    expect(response.body.pagination.totalDocument).toStrictEqual(3);
     // check database
   });
 });

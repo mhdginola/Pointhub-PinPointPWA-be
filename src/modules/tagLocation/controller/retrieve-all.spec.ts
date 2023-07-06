@@ -1,4 +1,3 @@
-// TODO: unsolved error
 import { faker } from "@faker-js/faker";
 import request from "supertest";
 import UserFactory from "../../user/model/user.factory.js";
@@ -67,6 +66,7 @@ describe("retrieve all tagLocation", () => {
     expect(response.body).toEqual(error403);
     // check response database
   });
+  // TODO: unsolved error
   it("1.3 retrieve all tagLocation radius 100m success, check not in radius", async () => {
     const app = await createApp();
 
