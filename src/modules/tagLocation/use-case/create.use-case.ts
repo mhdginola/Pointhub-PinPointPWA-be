@@ -17,7 +17,7 @@ export class CreateTagLocationUseCase {
       validate(document);
 
       // save to database
-      const groTagLocationEntityEntity = objClean(
+      const tagLocationEntity = objClean(
         new TagLocationEntity({
           name: document.name,
           latitude: document.latitude,
@@ -26,7 +26,7 @@ export class CreateTagLocationUseCase {
         })
       );
 
-      const response = await new CreateTagLocationRepository(this.db).handle(groTagLocationEntityEntity, options);
+      const response = await new CreateTagLocationRepository(this.db).handle(tagLocationEntity, options);
 
       return {
         acknowledged: response.acknowledged,

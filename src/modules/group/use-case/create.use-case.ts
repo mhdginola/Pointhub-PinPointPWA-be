@@ -17,14 +17,14 @@ export class CreateGroupUseCase {
       validate(document);
 
       // save to database
-      const groGroupEntityEntity = objClean(
+      const groupEntity = objClean(
         new GroupEntity({
           name: document.name,
           createdAt: new Date(),
         })
       );
 
-      const response = await new CreateGroupRepository(this.db).handle(groGroupEntityEntity, options);
+      const response = await new CreateGroupRepository(this.db).handle(groupEntity, options);
 
       return {
         acknowledged: response.acknowledged,
