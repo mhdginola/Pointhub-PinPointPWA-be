@@ -43,7 +43,7 @@ describe("delete an invitation", () => {
     const userFactory = new UserFactory();
     const userSeed = [
       {
-        id: faker.datatype.uuid(),
+        _id: faker.database.mongodbObjectId(),
         username: "admin",
         role: "",
       },
@@ -51,7 +51,7 @@ describe("delete an invitation", () => {
     userFactory.sequence(userSeed);
     await userFactory.createMany(1);
 
-    const accessToken = signNewToken(issuer, secretKey, userSeed[0].id);
+    const accessToken = signNewToken(issuer, secretKey, userSeed[0]._id);
     const responseLogin = { body: { accessToken: accessToken } };
 
     const invitationFactory = new InvitationFactory();
@@ -72,7 +72,7 @@ describe("delete an invitation", () => {
     const userFactory = new UserFactory();
     const userSeed = [
       {
-        id: faker.datatype.uuid(),
+        _id: faker.database.mongodbObjectId(),
         username: "admin",
         role: "admin",
       },
@@ -80,14 +80,14 @@ describe("delete an invitation", () => {
     userFactory.sequence(userSeed);
     await userFactory.createMany(1);
 
-    const accessToken = signNewToken(issuer, secretKey, userSeed[0].id);
+    const accessToken = signNewToken(issuer, secretKey, userSeed[0]._id);
     const responseLogin = { body: { accessToken: accessToken } };
 
     const invitationFactory = new InvitationFactory();
     const resultFactory = await invitationFactory.createMany(3);
 
     const response = await request(app)
-      .delete(`/v1/users/${resultFactory.insertedIds[1]}`)
+      .delete(`/v1/invitations/${resultFactory.insertedIds[1]}`)
       .set("Authorization", `Bearer ${responseLogin.body.accessToken}`);
     // check status code
     expect(response.statusCode).toEqual(204);

@@ -3,11 +3,13 @@ import Validatorjs from "validatorjs";
 import { DocumentInterface } from "@src/database/connection.js";
 
 // https://github.com/mikeerickson/validatorjs
-export const validate = (document: DocumentInterface = {}) => {
+export const validate = (document: DocumentInterface) => {
   try {
     const validation = new Validatorjs(document, {
-      "filter.name": "required",
+      email: "required",
+      group: "required",
     });
+
     if (validation.fails()) {
       throw new ApiError(422, validation.errors.errors);
     }
