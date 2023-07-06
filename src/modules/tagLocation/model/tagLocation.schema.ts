@@ -29,11 +29,11 @@ export async function createCollection(db: IDatabaseAdapter) {
           description: "The name for the tagLocation",
         },
         longitude: {
-          bsonType: "double",
+          bsonType: "string",
           description: "The longitude for the tagLocation",
         },
         latitude: {
-          bsonType: "double",
+          bsonType: "string",
           description: "The latitude for the tagLocation",
         },
       },
