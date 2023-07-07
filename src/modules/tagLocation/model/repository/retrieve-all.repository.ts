@@ -38,7 +38,7 @@ export class RetrieveAllTagLocationRepository {
     if(longitude && latitude) {
       aggregates.push({ 
         $geoNear: {
-          near: { type: "Point", coordinates: [ +longitude , +latitude ] },
+          near: { type: "Point", coordinates: [ +longitude, +latitude ] },
           maxDistance: +distance | 100,
           distanceField: "dist.calculated",
           spherical: true
@@ -53,10 +53,6 @@ export class RetrieveAllTagLocationRepository {
     }
 
     const tagLocationRecord = await retrieveAll("tagLocations");
-
-    console.log(tagLocationRecord)
-    console.log(JSON.stringify(aggregates));
-    console.log(JSON.stringify(query));
 
     return await this.databaseManager.aggregate(aggregates, { page: query.page || 1, pageSize: query.pageSize || 10 });
   }

@@ -122,18 +122,24 @@ describe("retrieve all tagLocation", () => {
     const tagLocationsSeed = [
       {
         name: faker.name.firstName(),
-        longitude: longitude,
-        latitude: latitude,
+        location: {
+          type: "Point",
+          coordinates: [longitude, latitude]
+        },
       },
       {
         name: faker.name.firstName(),
-        longitude: longitude,
-        latitude: latitude,
+        location: {
+          type: "Point",
+          coordinates: [longitude, latitude]
+        },
       },
       {
         name: faker.name.firstName(),
-        longitude: longitude + 200,
-        latitude: latitude + 200,
+        location: {
+          type: "Point",
+          coordinates: [longitude + 1, latitude + 1]
+        },
       },
     ];
     tagLocationFactory.sequence(tagLocationsSeed);
@@ -158,14 +164,14 @@ describe("retrieve all tagLocation", () => {
         100
       )
     ).toStrictEqual(true);
-    expect(tagLocationRecord[2]._id).toStrictEqual(response.body.tagLocations[1]._id);
-    expect(tagLocationRecord[2].name).toStrictEqual(response.body.tagLocations[1].name);
+    expect(tagLocationRecord[1]._id).toStrictEqual(response.body.tagLocations[1]._id);
+    expect(tagLocationRecord[1].name).toStrictEqual(response.body.tagLocations[1].name);
     expect(
       validateCoordinates(
         latitude,
         longitude,
-        response.body.tagLocations[2].latitude,
-        response.body.tagLocations[2].longitude,
+        response.body.tagLocations[1].latitude,
+        response.body.tagLocations[1].longitude,
         100
       )
     ).toStrictEqual(true);

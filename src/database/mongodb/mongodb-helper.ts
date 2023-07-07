@@ -38,6 +38,7 @@ export class MongoDBHelper {
 
   public async create2dSphere(collection: string, properties: object) {
     await this.db.createIndex(collection, properties, {
+      unique: false,
       collation: {
         locale: "en",
         strength: 2,
