@@ -132,8 +132,8 @@ describe("retrieve all tagLocation", () => {
       },
       {
         name: faker.name.firstName(),
-        longitude: longitude,
-        latitude: latitude,
+        longitude: longitude + 200,
+        latitude: latitude + 200,
       },
     ];
     tagLocationFactory.sequence(tagLocationsSeed);

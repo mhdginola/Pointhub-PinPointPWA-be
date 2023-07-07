@@ -1,6 +1,7 @@
 import { TagLocationEntityInterface } from "../tagLocation.entity.js";
 import DatabaseConnection, { QueryInterface, RetrieveAllOptionsInterface } from "@src/database/connection.js";
 import DatabaseManager from "@src/database/database-manager.js";
+import { retrieveAll } from "@src/test/utils.js";
 
 interface DataInterface extends TagLocationEntityInterface {
   _id: string;
@@ -50,6 +51,12 @@ export class RetrieveAllTagLocationRepository {
         aggregates.push({ $match: { [key]: query.filter[key] } })
       }
     }
+
+    const tagLocationRecord = await retrieveAll("tagLocations");
+
+    console.log(tagLocationRecord)
+    console.log(JSON.stringify(aggregates));
+    console.log(JSON.stringify(query));
 
     return await this.databaseManager.aggregate(aggregates, { page: query.page || 1, pageSize: query.pageSize || 10 });
   }
