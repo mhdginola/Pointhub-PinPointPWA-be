@@ -22,32 +22,35 @@ export async function createCollection(db: IDatabaseAdapter) {
     console.info(`[schema] ${collection} - update schema`);
     await db.updateSchema(collection, {
       bsonType: "object",
-      required: ["longitude", "latitude"],
+      required: ["location"],
       properties: {
         name: {
           bsonType: "string",
           description: "The name for the tagLocation",
         },
-        longitude: {
-          bsonType: "string",
-          description: "The longitude for the tagLocation",
-        },
-        latitude: {
-          bsonType: "string",
-          description: "The latitude for the tagLocation",
+        location: {
+          bsonType: "object",
+          properties: {
+            type: {
+              bsonType: "string",
+              enum: ["Point"],
+              description: "The type of GeoJSON object (should be 'Point')",
+            },
+            coordinates: {
+              bsonType: "array",
+              items: {
+                bsonType: "double",
+              },
+              description: "The coordinates of the point [longitude, latitude]"
+            },
+          },
         },
       },
     });
 
-    console.info(`[schema] ${collection} - create unique attribute "longitude" and "latitude"`);
-    await helper.createUnique(collection, {
-      longitude: -1,
-      latitude: -1
-    });
-
-    console.info(`[schema] ${collection} - create unique attribute "optionalUniqueColumn" if the field is exists`);
-    await helper.createUniqueIfNotNull(collection, {
-      optionalUniqueColumn: -1,
+    console.info(`[schema] ${collection} - create 2dSphere attribute`);
+    await helper.create2dSphere(collection, {
+      "location.coordinates": "2dsphere"
     });
   } catch (error) {
     throw error;

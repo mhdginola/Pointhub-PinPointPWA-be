@@ -35,11 +35,6 @@ export async function createCollection(db: IDatabaseAdapter) {
     await helper.createUnique(collection, {
       name: -1
     });
-
-    console.info(`[schema] ${collection} - create unique attribute "optionalUniqueColumn" if the field is exists`);
-    await helper.createUniqueIfNotNull(collection, {
-      optionalUniqueColumn: -1,
-    });
   } catch (error) {
     throw error;
   }

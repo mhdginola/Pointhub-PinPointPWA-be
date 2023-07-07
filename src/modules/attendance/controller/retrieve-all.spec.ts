@@ -165,7 +165,6 @@ describe("retrieve all attendance as admin", () => {
     expect(response.body.pagination.totalDocument).toStrictEqual(2);
     // check database
   });
-  // TODO: unresolved
   it("1.5 retrieve all attendance filtered by date range, success", async () => {
     const app = await createApp();
 

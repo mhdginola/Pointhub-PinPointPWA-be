@@ -36,6 +36,15 @@ export class MongoDBHelper {
     });
   }
 
+  public async create2dSphere(collection: string, properties: object) {
+    await this.db.createIndex(collection, properties, {
+      collation: {
+        locale: "en",
+        strength: 2,
+      },
+    });
+  }
+
   public async isExists(name: string) {
     const collections = (await this.db.listCollections()) as [];
     return collections.some(function (collection: { name: string }) {

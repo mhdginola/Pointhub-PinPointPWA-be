@@ -115,8 +115,8 @@ describe("retrieve all tagLocation", () => {
       return distance <= radius;
     }
 
-    const longitude = parseInt(faker.address.longitude());
-    const latitude = parseInt(faker.address.latitude());
+    const longitude = parseFloat(faker.address.longitude());
+    const latitude = parseFloat(faker.address.latitude());
 
     const tagLocationFactory = new TagLocationFactory();
     const tagLocationsSeed = [
@@ -132,8 +132,8 @@ describe("retrieve all tagLocation", () => {
       },
       {
         name: faker.name.firstName(),
-        longitude: longitude + 200,
-        latitude: latitude + 200,
+        longitude: longitude,
+        latitude: latitude,
       },
     ];
     tagLocationFactory.sequence(tagLocationsSeed);

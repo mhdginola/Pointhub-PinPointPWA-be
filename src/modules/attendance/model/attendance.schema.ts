@@ -46,17 +46,6 @@ export async function createCollection(db: IDatabaseAdapter) {
         },
       },
     });
-
-    console.info(`[schema] ${collection} - create unique attribute "photo" and "location"`);
-    await helper.createUnique(collection, {
-      photo: -1,
-      location: -1,
-    });
-
-    console.info(`[schema] ${collection} - create unique attribute "optionalUniqueColumn" if the field is exists`);
-    await helper.createUniqueIfNotNull(collection, {
-      optionalUniqueColumn: -1,
-    });
   } catch (error) {
     throw error;
   }

@@ -35,15 +35,9 @@ export async function createCollection(db: IDatabaseAdapter) {
       },
     });
 
-    console.info(`[schema] ${collection} - create unique attribute "username" and "role"`);
+    console.info(`[schema] ${collection} - create unique attribute "username"`);
     await helper.createUnique(collection, {
-      username: -1,
-      role: -1
-    });
-
-    console.info(`[schema] ${collection} - create unique attribute "optionalUniqueColumn" if the field is exists`);
-    await helper.createUniqueIfNotNull(collection, {
-      optionalUniqueColumn: -1,
+      username: -1
     });
   } catch (error) {
     throw error;

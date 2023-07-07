@@ -20,8 +20,10 @@ export class CreateTagLocationUseCase {
       const tagLocationEntity = objClean(
         new TagLocationEntity({
           name: document.name,
-          latitude: document.latitude,
-          longitude: document.longitude,
+          location: {
+            type: "Point",
+            coordinates: [ document.longitude, document.latitude ]
+          },
           createdAt: new Date(),
         })
       );

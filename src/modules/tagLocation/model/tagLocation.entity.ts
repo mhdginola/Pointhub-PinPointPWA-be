@@ -1,8 +1,12 @@
+export interface PointLocation {
+  type: string;
+  coordinates: number[];
+}
+
 export interface TagLocationEntityInterface {
   _id?: string;
   name?: string;
-  latitude?: number | string;
-  longitude?: number | string;
+  location?: PointLocation;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -10,16 +14,14 @@ export interface TagLocationEntityInterface {
 export class TagLocationEntity implements TagLocationEntityInterface {
   public _id?: string;
   public name?: string;
-  public latitude?: number | string;
-  public longitude?: number | string;
+  public location?: PointLocation;
   public createdAt?: Date;
   public updatedAt?: Date;
 
   constructor(tagLocation: TagLocationEntityInterface) {
     this._id = tagLocation._id;
     this.name = tagLocation.name;
-    this.latitude = tagLocation.latitude;
-    this.longitude = tagLocation.longitude;
+    this.location = tagLocation.location;
     this.createdAt = tagLocation.createdAt;
     this.updatedAt = tagLocation.updatedAt;
   }

@@ -9,8 +9,10 @@ export default class TagLocationFactory extends Factory<TagLocationEntityInterfa
   definition() {
     return {
       name: faker.name.fullName(),
-      latitude: faker.address.latitude(),
-      longitude: faker.address.longitude(),
+      location: {
+        type: "Point",
+        coordinates: [parseFloat(faker.address.longitude()), parseFloat(faker.address.latitude())]
+      },
       createdAt: new Date(),
     };
   }

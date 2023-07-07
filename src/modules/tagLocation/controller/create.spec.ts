@@ -131,8 +131,8 @@ describe("create an tagLocation", () => {
 
     const data = {
       name: faker.name.fullName(),
-      longitude: faker.address.longitude(),
-      latitude: faker.address.latitude(),
+      longitude: parseFloat(faker.address.longitude()),
+      latitude: parseFloat(faker.address.latitude())
     };
 
     const response = await request(app)
@@ -147,7 +147,7 @@ describe("create an tagLocation", () => {
     const tagLocationRecord = await retrieve("tagLocations", response.body._id);
     expect(tagLocationRecord._id).toStrictEqual(response.body._id);
     expect(tagLocationRecord.name).toStrictEqual(data.name);
-    expect(tagLocationRecord.longitude).toStrictEqual(data.longitude);
-    expect(tagLocationRecord.latitude).toStrictEqual(data.latitude);
+    expect(tagLocationRecord.location.coordinates[0]).toStrictEqual(data.longitude);
+    expect(tagLocationRecord.location.coordinates[1]).toStrictEqual(data.latitude);
   });
 });
