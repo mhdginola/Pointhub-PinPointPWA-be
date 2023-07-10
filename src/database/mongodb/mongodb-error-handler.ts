@@ -15,10 +15,14 @@ export default class MongoError extends BaseError {
         error.errors = obj;
       });
     } else if (err.code === 11000) {
+      error.code = 422;
+      error.status = "Unprocessable Entity";
+      error.message = "The request was well-formed but was unable to be followed due to semantic errors.";
+      
       // handle unique validation
       if (Object.keys(err.keyPattern).length === 1) {
         error.errors = {
-          [Object.keys(err.keyPattern)[0]]: `The ${Object.keys(err.keyPattern)[0]} is exists`,
+          [Object.keys(err.keyPattern)[0]]: [`${Object.keys(err.keyPattern)[0]} must be unique`],
         };
       } else {
         // get keys

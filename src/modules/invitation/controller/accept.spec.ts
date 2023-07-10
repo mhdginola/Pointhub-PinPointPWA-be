@@ -54,7 +54,7 @@ describe("accept an invitation", () => {
     const userFactory = new UserFactory();
     const userSeed = [
       {
-        id: faker.datatype.uuid(),
+        _id: faker.database.mongodbObjectId(),
         username: "employee",
         role: "",
       },
@@ -62,7 +62,7 @@ describe("accept an invitation", () => {
     userFactory.sequence(userSeed);
     await userFactory.createMany(1);
 
-    const accessToken = signNewToken(issuer, secretKey, userSeed[0].id);
+    const accessToken = signNewToken(issuer, secretKey, userSeed[0]._id);
     const responseLogin = { body: { accessToken: accessToken } };
 
     const data = { accept: true };
@@ -86,7 +86,7 @@ describe("accept an invitation", () => {
     const userFactory = new UserFactory();
     const userSeed = [
       {
-        id: faker.datatype.uuid(),
+        _id: faker.database.mongodbObjectId(),
         username: "employee",
         role: "employee",
       },
@@ -94,7 +94,7 @@ describe("accept an invitation", () => {
     userFactory.sequence(userSeed);
     await userFactory.createMany(1);
 
-    const accessToken = signNewToken(issuer, secretKey, userSeed[0].id);
+    const accessToken = signNewToken(issuer, secretKey, userSeed[0]._id);
     const responseLogin = { body: { accessToken: accessToken } };
 
     const data = {};
@@ -118,7 +118,7 @@ describe("accept an invitation", () => {
     const userFactory = new UserFactory();
     const userSeed = [
       {
-        id: faker.datatype.uuid(),
+        _id: faker.database.mongodbObjectId(),
         username: "employee",
         role: "employee",
       },
@@ -126,7 +126,7 @@ describe("accept an invitation", () => {
     userFactory.sequence(userSeed);
     await userFactory.createMany(1);
 
-    const accessToken = signNewToken(issuer, secretKey, userSeed[0].id);
+    const accessToken = signNewToken(issuer, secretKey, userSeed[0]._id);
     const responseLogin = { body: { accessToken: accessToken } };
 
     const data = { accept: true };
@@ -143,7 +143,7 @@ describe("accept an invitation", () => {
     // check response body
     expect(response.body).toStrictEqual({});
     // check database
-    const invitationRecord = await retrieve("coas", resultFactory.insertedIds[1]);
+    const invitationRecord = await retrieve("invitations", resultFactory.insertedIds[1]);
     expect(invitationRecord.accept).toStrictEqual(data.accept);
   });
   it("1.5 reject invitation success", async () => {
@@ -152,7 +152,7 @@ describe("accept an invitation", () => {
     const userFactory = new UserFactory();
     const userSeed = [
       {
-        id: faker.datatype.uuid(),
+        _id: faker.database.mongodbObjectId(),
         username: "employee",
         role: "employee",
       },
@@ -160,7 +160,7 @@ describe("accept an invitation", () => {
     userFactory.sequence(userSeed);
     await userFactory.createMany(1);
 
-    const accessToken = signNewToken(issuer, secretKey, userSeed[0].id);
+    const accessToken = signNewToken(issuer, secretKey, userSeed[0]._id);
     const responseLogin = { body: { accessToken: accessToken } };
 
     const data = { accept: false };
@@ -177,7 +177,7 @@ describe("accept an invitation", () => {
     // check response body
     expect(response.body).toStrictEqual({});
     // check database
-    const invitationRecord = await retrieve("coas", resultFactory.insertedIds[1]);
+    const invitationRecord = await retrieve("invitations", resultFactory.insertedIds[1]);
     expect(invitationRecord.accept).toStrictEqual(data.accept);
   });
 });

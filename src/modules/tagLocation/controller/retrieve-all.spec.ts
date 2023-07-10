@@ -43,7 +43,7 @@ describe("retrieve all tagLocation", () => {
     const userFactory = new UserFactory();
     const userSeed = [
       {
-        id: faker.datatype.uuid(),
+        _id: faker.database.mongodbObjectId(),
         username: "employee",
         role: "",
       },
@@ -51,7 +51,7 @@ describe("retrieve all tagLocation", () => {
     userFactory.sequence(userSeed);
     await userFactory.createMany(1);
 
-    const accessToken = signNewToken(issuer, secretKey, userSeed[0].id);
+    const accessToken = signNewToken(issuer, secretKey, userSeed[0]._id);
     const responseLogin = { body: { accessToken: accessToken } };
 
     const tagLocationFactory = new TagLocationFactory();
@@ -66,13 +66,14 @@ describe("retrieve all tagLocation", () => {
     expect(response.body).toEqual(error403);
     // check response database
   });
+  // TODO: unsolved error
   it("1.3 retrieve all tagLocation radius 100m success, check not in radius", async () => {
     const app = await createApp();
 
     const userFactory = new UserFactory();
     const userSeed = [
       {
-        id: faker.datatype.uuid(),
+        _id: faker.database.mongodbObjectId(),
         username: "employee",
         role: "employee",
       },
@@ -80,7 +81,7 @@ describe("retrieve all tagLocation", () => {
     userFactory.sequence(userSeed);
     await userFactory.createMany(1);
 
-    const accessToken = signNewToken(issuer, secretKey, userSeed[0].id);
+    const accessToken = signNewToken(issuer, secretKey, userSeed[0]._id);
     const responseLogin = { body: { accessToken: accessToken } };
 
     // Fungsi bantu untuk mengonversi sudut dalam derajat menjadi radian
@@ -114,28 +115,34 @@ describe("retrieve all tagLocation", () => {
       return distance <= radius;
     }
 
-    const longitude = parseInt(faker.address.longitude());
-    const latitude = parseInt(faker.address.latitude());
+    const longitude = parseFloat(faker.address.longitude());
+    const latitude = parseFloat(faker.address.latitude());
 
     const tagLocationFactory = new TagLocationFactory();
     const tagLocationsSeed = [
       {
         name: faker.name.firstName(),
-        longitude: longitude,
-        latitude: latitude,
+        location: {
+          type: "Point",
+          coordinates: [longitude, latitude]
+        },
       },
       {
         name: faker.name.firstName(),
-        longitude: longitude,
-        latitude: latitude,
+        location: {
+          type: "Point",
+          coordinates: [longitude, latitude]
+        },
       },
       {
         name: faker.name.firstName(),
-        longitude: longitude + 200,
-        latitude: latitude + 200,
+        location: {
+          type: "Point",
+          coordinates: [longitude + 1, latitude + 1]
+        },
       },
     ];
-    userFactory.sequence(tagLocationsSeed);
+    tagLocationFactory.sequence(tagLocationsSeed);
     await tagLocationFactory.createMany(3);
 
     const response = await request(app)
@@ -157,14 +164,14 @@ describe("retrieve all tagLocation", () => {
         100
       )
     ).toStrictEqual(true);
-    expect(tagLocationRecord[2]._id).toStrictEqual(response.body.tagLocations[1]._id);
-    expect(tagLocationRecord[2].name).toStrictEqual(response.body.tagLocations[1].name);
+    expect(tagLocationRecord[1]._id).toStrictEqual(response.body.tagLocations[1]._id);
+    expect(tagLocationRecord[1].name).toStrictEqual(response.body.tagLocations[1].name);
     expect(
       validateCoordinates(
         latitude,
         longitude,
-        response.body.tagLocations[2].latitude,
-        response.body.tagLocations[2].longitude,
+        response.body.tagLocations[1].latitude,
+        response.body.tagLocations[1].longitude,
         100
       )
     ).toStrictEqual(true);

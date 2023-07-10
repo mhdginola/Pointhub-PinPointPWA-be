@@ -39,7 +39,7 @@ describe("create an attendance", () => {
     const userFactory = new UserFactory();
     const userSeed = [
       {
-        id: faker.datatype.uuid(),
+        _id: faker.database.mongodbObjectId(),
         username: "admin",
         role: "",
       },
@@ -47,11 +47,11 @@ describe("create an attendance", () => {
     userFactory.sequence(userSeed);
     await userFactory.createMany(1);
 
-    const accessToken = signNewToken(issuer, secretKey, userSeed[0].id);
+    const accessToken = signNewToken(issuer, secretKey, userSeed[0]._id);
     const responseLogin = { body: { accessToken: accessToken } };
 
     const response = await request(app)
-      .post("/v1/attendances/export")
+      .get("/v1/attendances/export")
       .set("Authorization", `Bearer ${responseLogin.body.accessToken}`);
     // check status code
     expect(response.statusCode).toEqual(403);
@@ -65,15 +65,15 @@ describe("create an attendance", () => {
     const userFactory = new UserFactory();
     const userSeed = [
       {
-        id: faker.datatype.uuid(),
+        _id: faker.database.mongodbObjectId(),
         username: "admin",
-        role: "",
+        role: "admin",
       },
     ];
     userFactory.sequence(userSeed);
     await userFactory.createMany(1);
 
-    const accessToken = signNewToken(issuer, secretKey, userSeed[0].id);
+    const accessToken = signNewToken(issuer, secretKey, userSeed[0]._id);
     const responseLogin = { body: { accessToken: accessToken } };
 
     const response = await request(app)

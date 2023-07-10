@@ -43,7 +43,7 @@ describe("delete an tagLocation", () => {
     const userFactory = new UserFactory();
     const userSeed = [
       {
-        id: faker.datatype.uuid(),
+        _id: faker.database.mongodbObjectId(),
         username: "employee",
         role: "",
       },
@@ -51,7 +51,7 @@ describe("delete an tagLocation", () => {
     userFactory.sequence(userSeed);
     await userFactory.createMany(1);
 
-    const accessToken = signNewToken(issuer, secretKey, userSeed[0].id);
+    const accessToken = signNewToken(issuer, secretKey, userSeed[0]._id);
     const responseLogin = { body: { accessToken: accessToken } };
 
     const tagLocationFactory = new TagLocationFactory();
@@ -72,7 +72,7 @@ describe("delete an tagLocation", () => {
     const userFactory = new UserFactory();
     const userSeed = [
       {
-        id: faker.datatype.uuid(),
+        _id: faker.database.mongodbObjectId(),
         username: "employee",
         role: "employee",
       },
@@ -80,7 +80,7 @@ describe("delete an tagLocation", () => {
     userFactory.sequence(userSeed);
     await userFactory.createMany(1);
 
-    const accessToken = signNewToken(issuer, secretKey, userSeed[0].id);
+    const accessToken = signNewToken(issuer, secretKey, userSeed[0]._id);
     const responseLogin = { body: { accessToken: accessToken } };
 
     const tagLocationFactory = new TagLocationFactory();

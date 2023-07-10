@@ -55,7 +55,7 @@ describe("create an tagLocation", () => {
     const userFactory = new UserFactory();
     const userSeed = [
       {
-        id: faker.datatype.uuid(),
+        _id: faker.database.mongodbObjectId(),
         username: "employee",
         role: "",
       },
@@ -63,7 +63,7 @@ describe("create an tagLocation", () => {
     userFactory.sequence(userSeed);
     await userFactory.createMany(1);
 
-    const accessToken = signNewToken(issuer, secretKey, userSeed[0].id);
+    const accessToken = signNewToken(issuer, secretKey, userSeed[0]._id);
     const responseLogin = { body: { accessToken: accessToken } };
 
     const data = {
@@ -89,7 +89,7 @@ describe("create an tagLocation", () => {
     const userFactory = new UserFactory();
     const userSeed = [
       {
-        id: faker.datatype.uuid(),
+        _id: faker.database.mongodbObjectId(),
         username: "employee",
         role: "employee",
       },
@@ -97,7 +97,7 @@ describe("create an tagLocation", () => {
     userFactory.sequence(userSeed);
     await userFactory.createMany(1);
 
-    const accessToken = signNewToken(issuer, secretKey, userSeed[0].id);
+    const accessToken = signNewToken(issuer, secretKey, userSeed[0]._id);
     const responseLogin = { body: { accessToken: accessToken } };
 
     const data = {};
@@ -118,7 +118,7 @@ describe("create an tagLocation", () => {
     const userFactory = new UserFactory();
     const userSeed = [
       {
-        id: faker.datatype.uuid(),
+        _id: faker.database.mongodbObjectId(),
         username: "employee",
         role: "employee",
       },
@@ -126,13 +126,13 @@ describe("create an tagLocation", () => {
     userFactory.sequence(userSeed);
     await userFactory.createMany(1);
 
-    const accessToken = signNewToken(issuer, secretKey, userSeed[0].id);
+    const accessToken = signNewToken(issuer, secretKey, userSeed[0]._id);
     const responseLogin = { body: { accessToken: accessToken } };
 
     const data = {
       name: faker.name.fullName(),
-      longitude: faker.address.longitude(),
-      latitude: faker.address.latitude(),
+      longitude: parseFloat(faker.address.longitude()),
+      latitude: parseFloat(faker.address.latitude())
     };
 
     const response = await request(app)
@@ -147,7 +147,7 @@ describe("create an tagLocation", () => {
     const tagLocationRecord = await retrieve("tagLocations", response.body._id);
     expect(tagLocationRecord._id).toStrictEqual(response.body._id);
     expect(tagLocationRecord.name).toStrictEqual(data.name);
-    expect(tagLocationRecord.longitude).toStrictEqual(data.longitude);
-    expect(tagLocationRecord.latitude).toStrictEqual(data.latitude);
+    expect(tagLocationRecord.location.coordinates[0]).toStrictEqual(data.longitude);
+    expect(tagLocationRecord.location.coordinates[1]).toStrictEqual(data.latitude);
   });
 });
