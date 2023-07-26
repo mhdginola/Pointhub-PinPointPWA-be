@@ -6,6 +6,7 @@ import { retrieve } from "@src/test/utils.js";
 
 async function auth(req: Request, res: Response, next: NextFunction) {
   try {
+    const allowedRoles: string[] = ["employee", "admin"];
     const authorizationHeader = req.headers.authorization ?? "";
 
     if (authorizationHeader === "") {
@@ -21,7 +22,7 @@ async function auth(req: Request, res: Response, next: NextFunction) {
       throw new ApiError(401);
     }
 
-    if (!user?.role) {
+    if (!user?.role || !allowedRoles.includes(user?.role)) {
       throw new ApiError(403);
     }
 
