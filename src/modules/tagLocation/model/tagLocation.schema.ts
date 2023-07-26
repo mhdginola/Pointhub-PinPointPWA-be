@@ -41,7 +41,7 @@ export async function createCollection(db: IDatabaseAdapter) {
               items: {
                 bsonType: "double",
               },
-              description: "The coordinates of the point [longitude, latitude]"
+              description: "The coordinates of the point [longitude, latitude]",
             },
           },
         },
@@ -50,7 +50,7 @@ export async function createCollection(db: IDatabaseAdapter) {
 
     console.info(`[schema] ${collection} - create 2dSphere attribute`);
     await helper.create2dSphere(collection, {
-      "location.coordinates": "2dsphere"
+      "location.coordinates": "2dsphere",
     });
   } catch (error) {
     throw error;

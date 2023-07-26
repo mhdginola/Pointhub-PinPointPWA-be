@@ -1,8 +1,8 @@
 import { faker } from "@faker-js/faker";
 import Factory from "@point-hub/express-factory";
-import { UserEntityInterface } from "./user.entity.js";
 import { CreateManyUserRepository } from "./repository/create-many.repository.js";
 import { CreateUserRepository } from "./repository/create.repository.js";
+import { UserEntityInterface } from "./user.entity.js";
 import { db } from "@src/database/database.js";
 
 export default class UserFactory extends Factory<UserEntityInterface> {

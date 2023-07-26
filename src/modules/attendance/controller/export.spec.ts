@@ -3,7 +3,7 @@ import request from "supertest";
 import UserFactory from "../../user/model/user.factory.js";
 import { createApp } from "@src/app.js";
 import { issuer, secretKey } from "@src/config/auth.js";
-import { resetDatabase, retrieve } from "@src/test/utils.js";
+import { resetDatabase } from "@src/test/utils.js";
 import { signNewToken } from "@src/utils/jwt.js";
 
 // error message

@@ -18,7 +18,7 @@ export const exportController = async (req: Request, res: Response, next: NextFu
     await db.commitTransaction();
 
     const responseValue: ResponseInterface = {
-      downloadLink: result.downloadLink
+      downloadLink: result.downloadLink,
     };
 
     res.status(200).json(responseValue);
