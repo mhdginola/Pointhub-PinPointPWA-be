@@ -1,17 +1,3 @@
 {
-    "name": "Pointhub-PinPointPWA-be",
-    "version": 2,
-    "public": true,
-    "builds": [
-      {
-        "src": "src/index.ts",
-        "use": "@vercel/node"
-      }
-    ],
-    "routes": [
-      {
-        "src": "/(.*)",
-        "dest": "/src/index.ts"
-      }
-    ]
-  }
+    "rewrites": [{ "source": "/(.*)", "destination": "/api"}]
+}
