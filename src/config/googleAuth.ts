@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import passport from "passport";
 import { Strategy as GoogleStrategy, VerifyCallback } from "passport-google-oauth20";
-import appConfig from "./app";
+import appConfig from "@src/config/app.js";
 
 dotenv.config();
 type User = {
