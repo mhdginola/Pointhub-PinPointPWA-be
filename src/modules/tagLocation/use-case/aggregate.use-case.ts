@@ -12,14 +12,14 @@ export class AggregateTagLocationUseCase {
     try {
       const response = await new RetrieveAllTagLocationRepository(this.db).handle(query, options);
 
-      const transformedArray = response?.data.map(result => ({
+      const transformedArray = response?.data.map((result) => ({
         _id: result._id,
         name: result.name,
         longitude: result.location?.coordinates[0],
         latitude: result.location?.coordinates[1],
-        createdAt: result.createdAt
-      }))
-      
+        createdAt: result.createdAt,
+      }));
+
       return {
         tagLocations: transformedArray,
         pagination: response.pagination,

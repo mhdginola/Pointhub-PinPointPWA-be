@@ -37,7 +37,7 @@ export async function createCollection(db: IDatabaseAdapter) {
 
     console.info(`[schema] ${collection} - create unique attribute "username"`);
     await helper.createUnique(collection, {
-      username: -1
+      username: -1,
     });
   } catch (error) {
     throw error;

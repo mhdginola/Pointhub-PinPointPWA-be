@@ -12,6 +12,9 @@ export async function createApp() {
   // all files inside src/assets folder is accessible to public within /assets path
   app.use("/assets", ExpressStatic("src/assets"));
 
+  // all files inside src/assets folder is accessible to public within /assets path
+  app.use("/export", ExpressStatic("src/export"));
+
   // all of your endpoint should be inside router
   app.use("/", router());
 

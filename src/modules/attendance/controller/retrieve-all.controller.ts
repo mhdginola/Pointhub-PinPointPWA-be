@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response, query } from "express";
+import { NextFunction, Request, Response } from "express";
 import { RetrieveAllAttendanceUseCase } from "../use-case/retrieve-all.use-case.js";
 import { QueryInterface } from "@src/database/connection.js";
 import { db } from "@src/database/database.js";

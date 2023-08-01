@@ -3,7 +3,6 @@ import request from "supertest";
 import UserFactory from "../../user/model/user.factory.js";
 import { createApp } from "@src/app.js";
 import { issuer, secretKey } from "@src/config/auth.js";
-import { loginWithGoogle } from "@src/modules/googleApi/googleApi.js";
 import { resetDatabase, retrieve } from "@src/test/utils.js";
 import { signNewToken } from "@src/utils/jwt.js";
 
@@ -132,7 +131,7 @@ describe("create an tagLocation", () => {
     const data = {
       name: faker.name.fullName(),
       longitude: parseFloat(faker.address.longitude()),
-      latitude: parseFloat(faker.address.latitude())
+      latitude: parseFloat(faker.address.latitude()),
     };
 
     const response = await request(app)

@@ -124,21 +124,21 @@ describe("retrieve all tagLocation", () => {
         name: faker.name.firstName(),
         location: {
           type: "Point",
-          coordinates: [longitude, latitude]
+          coordinates: [longitude, latitude],
         },
       },
       {
         name: faker.name.firstName(),
         location: {
           type: "Point",
-          coordinates: [longitude, latitude]
+          coordinates: [longitude, latitude],
         },
       },
       {
         name: faker.name.firstName(),
         location: {
           type: "Point",
-          coordinates: [longitude + 1, latitude + 1]
+          coordinates: [longitude + 1, latitude + 1],
         },
       },
     ];
