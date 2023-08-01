@@ -22,11 +22,7 @@ async function auth(req: Request, res: Response, next: NextFunction) {
       throw new ApiError(401);
     }
 
-<<<<<<< HEAD
     if (!user?.role || !allowedRoles.includes(user?.role)) {
-=======
-    if (!user?.role) {
->>>>>>> 3eec9cf (addjustment login method)
       throw new ApiError(403);
     }
 
