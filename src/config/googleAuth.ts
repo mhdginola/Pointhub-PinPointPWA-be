@@ -3,6 +3,7 @@ import passport from "passport";
 import { Strategy as GoogleStrategy, VerifyCallback } from "passport-google-oauth20";
 import appConfig from "@src/config/app.js";
 
+// eslint-disable-next-line import/no-named-as-default-member
 dotenv.config();
 type User = {
   id?: number;
@@ -12,8 +13,8 @@ type User = {
 passport.use(
   new GoogleStrategy(
     {
-      clientID: "160801539479-147jshv55s8esq0ps42mnpu3l61trmk1.apps.googleusercontent.com",
-      clientSecret: "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",
+      clientID: "424415121221-tsa40hs66v4t99qhpuhaq5v9t7quofbp.apps.googleusercontent.com",
+      clientSecret: "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",
       callbackURL: `${appConfig.url}/v1/auth/google/callback`,
     },
     (accessToken: string, refreshToken: string, profile, done: VerifyCallback) => {
