@@ -80,7 +80,7 @@ export default class DatabaseManager {
   }
 
   public async aggregate(
-    pipeline: never,
+    pipeline: object[],
     query: AggregateQueryInterface,
     options?: AggregateOptionsInterface
   ): Promise<AggregateResultInterface> {
