@@ -34,7 +34,11 @@ export default class Middleware {
         // Set security HTTP headers
         this.app.use(helmet());
         // Cors
-        this.app.use(cors());
+        this.app.use(cors({
+            origin: ["http://localhost:8080", "https://pointhub-pin-point-pwa-fe.vercel.app"],
+            methods: "GET,POST,PUT,DELETE",
+            credentials: true,
+        }));
         this.app.set("trust proxy", 1);
         this.app.use(session({
             secret: "keyboard cat",

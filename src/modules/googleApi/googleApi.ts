@@ -16,7 +16,7 @@ export const loginWithGoogle = passport.authenticate("google", { scope: ["email"
 
 export const loginWithGoogleCallback = passport.authenticate("google", {
   failureRedirect: "/v1/auth/",
-  successRedirect: "/v1/auth/success",
+  successRedirect: process.env.CLIENT_URL,
 });
 
 export const loginWithGoogleSuccess = async (req: Request, res: Response) => {
@@ -50,6 +50,6 @@ export const loginWithGoogleSuccess = async (req: Request, res: Response) => {
       }
     }
   } else {
-    res.json({ isLoggedin: false });
+    res.json({ isLoggedIn: false });
   }
 };

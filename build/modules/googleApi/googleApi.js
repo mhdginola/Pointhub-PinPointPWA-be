@@ -7,7 +7,7 @@ import { signNewToken } from "../../utils/jwt.js";
 export const loginWithGoogle = passport.authenticate("google", { scope: ["email", "profile"] });
 export const loginWithGoogleCallback = passport.authenticate("google", {
     failureRedirect: "/v1/auth/",
-    successRedirect: "/v1/auth/success",
+    successRedirect: process.env.CLIENT_URL,
 });
 export const loginWithGoogleSuccess = async (req, res) => {
     if (req.isAuthenticated()) {
@@ -36,6 +36,6 @@ export const loginWithGoogleSuccess = async (req, res) => {
         }
     }
     else {
-        res.json({ isLoggedin: false });
+        res.json({ isLoggedIn: false });
     }
 };
