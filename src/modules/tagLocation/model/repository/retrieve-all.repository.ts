@@ -29,25 +29,27 @@ export class RetrieveAllTagLocationRepository {
     this.databaseManager = new DatabaseManager(databaseConnection, "tagLocations");
   }
 
-  public async handle(query: QueryInterface, options?: RetrieveAllOptionsInterface): Promise<ResponseInterface> {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  public async handle(query: QueryInterface, _options?: RetrieveAllOptionsInterface): Promise<ResponseInterface> {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const aggregates: any = [];
 
-    const { longitude, latitude, distance } = query as unknown as CoordinateQueryInterface
+    const { longitude, latitude, distance } = query as unknown as CoordinateQueryInterface;
 
-    if(longitude && latitude) {
-      aggregates.push({ 
+    if (longitude && latitude) {
+      aggregates.push({
         $geoNear: {
-          near: { type: "Point", coordinates: [ +longitude, +latitude ] },
+          near: { type: "Point", coordinates: [+longitude, +latitude] },
           maxDistance: +distance | 100,
           distanceField: "dist.calculated",
-          spherical: true
-        } 
-      })
+          spherical: true,
+        },
+      });
     }
 
     if (query.filter) {
       for (const key of Object.keys(query.filter)) {
-        aggregates.push({ $match: { [key]: query.filter[key] } })
+        aggregates.push({ $match: { [key]: query.filter[key] } });
       }
     }
 

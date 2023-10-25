@@ -1,6 +1,6 @@
 import { objClean } from "@point-hub/express-utils";
-import { TagLocationEntity } from "../model/tagLocation.entity.js";
 import { CreateTagLocationRepository } from "../model/repository/create.repository.js";
+import { TagLocationEntity } from "../model/tagLocation.entity.js";
 import { validate } from "../validation/create.validation.js";
 import DatabaseConnection, { CreateOptionsInterface, DocumentInterface } from "@src/database/connection.js";
 
@@ -22,7 +22,7 @@ export class CreateTagLocationUseCase {
           name: document.name,
           location: {
             type: "Point",
-            coordinates: [ document.longitude, document.latitude ]
+            coordinates: [document.longitude, document.latitude],
           },
           createdAt: new Date(),
         })
